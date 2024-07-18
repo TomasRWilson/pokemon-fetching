@@ -51,7 +51,7 @@ export default function Searchbar(props) {
                 </div>
                 { isOpen ? <>
                     <div className="absolute mt-16 grow flex flex-col bg-white float-left rounded-xl border-2">
-                        {availableNames.slice(0, 10).map((name) => (<p className="m-1 ml-3 cursor-pointer" onClick={(e) => (setValue(e.target.textContent))}>{name}</p>))}
+                        {availableNames.slice(0, 10).map((name) => (<p key={name} className="m-1 ml-3 cursor-pointer" onClick={(e) => (setValue(e.target.textContent))}>{name}</p>))}
                     </div>
                 </> : null }
             </div>
