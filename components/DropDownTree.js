@@ -48,7 +48,7 @@ export default function DropDownTree(props) {
                 console.log(`${title}: ${sprite}`);
               if (data[sprite]) {
                 return (
-                  <div className={"grow text-center my-3"}>
+                  <div key={sprites[sprite]} className={"grow text-center my-3"}>
                     <p className="font-bold">{cleanKey(sprite)}</p>
                     <img src={data[sprite]} className="mx-auto w-3/12 max-w-40" />
                   </div>

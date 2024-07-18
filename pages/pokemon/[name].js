@@ -11,7 +11,12 @@ import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
+
+
 export default function Home(props) {
+
+  const router = useRouter();
+
   if(props.error){
     return(<>
     <Head>
@@ -20,9 +25,9 @@ export default function Home(props) {
     <main>
       
       <div className="realtive flex flex-col items-center bg-white w-[500px] mt-20 m-auto rounded-2xl h-[600px] shadow-lg">
-        <img src='/ditto.svg' className='w-8/12 my-16'></img>
-        <p className='text-lg'>Hmm... looks like we didn't catch them all.</p>
-        <p className='text-lg'>We can't find that Pokemon.</p>
+        <img src="/ditto.svg" className="w-8/12 my-16"></img>
+        <p className="text-lg">Hmm... looks like we did not catch them all.</p>
+        <p className="text-lg">We can not find that Pokemon.</p>
       </div>
     </main>
       
@@ -30,7 +35,7 @@ export default function Home(props) {
   }
   const title =
     props.data.name.charAt(0).toUpperCase() + props.data.name.slice(1);
-  const router = useRouter();
+  
   var page = router.query.page;
   if(!page){
     page = 0;
