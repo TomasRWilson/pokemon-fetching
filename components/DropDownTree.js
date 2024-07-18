@@ -35,7 +35,7 @@ export default function DropDownTree(props) {
           <div className="ml-5">
             {Object.keys(data).map((sprite) => {
               if (typeof data[sprite] === "object" && data[sprite] !== null) {
-                return <DropDownTree key={sprite} title={sprite} data={data[sprite]}/>;
+                return <DropDownTree key={data[sprite]} title={sprite} data={data[sprite]}/>;
               }
             })}
           </div>
@@ -48,7 +48,7 @@ export default function DropDownTree(props) {
                 console.log(`${title}: ${sprite}`);
               if (data[sprite]) {
                 return (
-                  <div key={sprites[sprite]} className={"grow text-center my-3"}>
+                  <div key={data[sprite]} className={"grow text-center my-3"}>
                     <p className="font-bold">{cleanKey(sprite)}</p>
                     <img src={data[sprite]} className="mx-auto w-3/12 max-w-40" />
                   </div>

@@ -23,7 +23,7 @@ export default function Home(props) {
       <title>Whoops</title>
     </Head>
     <main>
-      
+      <NavBar names={[]} />
       <div className="realtive flex flex-col items-center bg-white w-[500px] mt-20 m-auto rounded-2xl h-[600px] shadow-lg">
         <img src="/ditto.svg" className="w-8/12 my-16"></img>
         <p className="text-lg">Hmm... looks like we did not catch them all.</p>
@@ -47,7 +47,7 @@ export default function Home(props) {
         <title>{title}</title>
       </Head>
       <main>
-        
+        <NavBar names={[]} />
         <Link
           className="float-left mt-1 mb-5 ml-16 rounded-full bg-stone-800 h-[56px] w-[56px]"
           href={`/?page=${page}`}
