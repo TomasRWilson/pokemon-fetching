@@ -1,82 +1,93 @@
-import { useState, useEffect } from "react";
 import Link from 'next/link';
 import Ability from "./Ability";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+
+const queryClient = new QueryClient()
 
 export default function PokemonCard(props) {
-  const [pokemon, setPokemon] = useState(null);
-  const [isLoading, setLoading] = useState(false);
-  const [bgImg, setBgImg] = useState(null);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Card props={props} />
+    </QueryClientProvider>
+  )
+}
 
-  const page = props.page;
+function Card(props) {
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(props.url)
-      .then((res) => res.json())
-      .then((data) => {
-        setPokemon(data);
-        setLoading(false);
-      });
-  }, []);
+  const page = props.props.page;
+  const queryResult = useQuery({
+    queryKey: [props.props.url],
+    queryFn: async () => {
+      const response = await fetch( 
+        props.props.url,
+      )
+      return await response.json()
+    },
+  })
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!pokemon) return <p>No Pokemon Data</p>;
+  if (queryResult.isPending || queryResult.isFetching) return 'Loading...';
+
+  if (queryResult.error) return 'An error has occurred: ' + error.message;
+
+  const data = queryResult.data;
+
+  var bgImg = null;
 
   if (!bgImg) {
-    switch (pokemon.types[0].type.name) {
+    switch (data.types[0].type.name) {
       case "normal":
-        setBgImg("/colourless.png");
+        bgImg = "/colourless.png";
         break;
       case "fighting":
-        setBgImg("/fairy.png");
+        bgImg = "/fairy.png";
         break;
       case "flying":
-        setBgImg("/flying.png");
+        bgImg = "/flying.png";
         break;
       case "poison":
-        setBgImg("/poison.png");
+        bgImg = "/poison.png";
         break;
       case "ground":
-        setBgImg("/ground.png");
+        bgImg = "/ground.png";
         break;
       case "rock":
-        setBgImg("/ground.png");
+        bgImg = "/ground.png";
         break;
       case "bug":
-        setBgImg("/grass.png");
+        bgImg = "/grass.png";
         break;
       case "ghost":
-        setBgImg("/ghost.png");
+        bgImg = "/ghost.png";
         break;
       case "steel":
-        setBgImg("/steel.png");
+        bgImg = "/steel.png";
         break;
       case "fire":
-        setBgImg("/fire.png");
+        bgImg = "/fire.png";
         break;
       case "water":
-        setBgImg("/water.png");
+        bgImg = "/water.png";
         break;
       case "grass":
-        setBgImg("/grass.png");
+        bgImg = "/grass.png";
         break;
       case "electric":
-        setBgImg("/electric.png");
+        bgImg = "/electric.png";
         break;
       case "psychic":
-        setBgImg("/psychic.png");
+        bgImg = "/psychic.png";
         break;
       case "ice":
-        setBgImg("/ice.png");
+        bgImg = "/ice.png";
         break;
       case "dragon":
-        setBgImg("/dragon.png");
+        bgImg = "/dragon.png";
         break;
       case "dark":
-        setBgImg("/ghost.png");
+        bgImg = "/ghost.png";
         break;
       case "fairy":
-        setBgImg("/fairy.png");
+        bgImg = "/fairy.png";
         break;
       default:
     }
@@ -91,7 +102,7 @@ export default function PokemonCard(props) {
     return str.join(" ");
   }
 
-  return !pokemon ? null : (
+  return !data ? null : (
     <div id="PokemonCard" className="max-[640px]:scale-90 p-3 z-0 flex flex-col w-full relative rounded-xl bg-yellow-300 shadow-md transition ease-in-out delay-100 max-[640px]:hover:scale-95 hover:scale-105 hover:shadow-xl duration-200">
       <div className="w-full h-full object-contain object-center relative block rounded-lg">
         <img
@@ -100,16 +111,16 @@ export default function PokemonCard(props) {
         />
       </div>
 
-        <Link href={`/pokemon/${pokemon.name}?page=${page}`} className="absolute rounded-lg text-center max-h-full top-0 bottom-0 ml-1 m-4 overflow-y-auto">
+        <Link href={`/pokemon/${data.name}?page=${page}`} className="absolute rounded-lg text-center max-h-full top-0 bottom-0 ml-1 m-4 overflow-y-auto">
             <ul className="inline-block justify-between w-full p-1">
               <li>
                 <p className="font-bold text-lg float-left">
-                  {toTitleCase(pokemon.name)}
+                  {toTitleCase(data.name)}
                 </p>
               </li>
               <li>
                 <p className="font-bold float-right">
-                  HP {pokemon.stats && pokemon.stats[0].base_stat}
+                  HP {data.stats && data.stats[0].base_stat}
                 </p>
               </li>
             </ul>
@@ -120,19 +131,19 @@ export default function PokemonCard(props) {
             <img
               className="object-contain h-full mx-auto"
               src={
-                pokemon.sprites &&
-                pokemon.sprites.other["official-artwork"].front_default
+                data.sprites &&
+                data.sprites.other["official-artwork"].front_default
               }
             ></img>
           </div>
           <div className="w-full bg-gray-100 border-t-1 border-gray-500 text-xs mx-auto">
-            <span>HT {pokemon.height}</span>
-            <span className="ml-4">WT {pokemon.weight}</span>
+            <span>HT {data.height}</span>
+            <span className="ml-4">WT {data.weight}</span>
           </div>
           </div>
           <div className="max-h-5/12 h-6/12">
-          {pokemon.abilities &&
-            pokemon.abilities.map((ability) => (
+          {data.abilities &&
+            data.abilities.map((ability) => (
               <Ability key={ability.ability.name} url={ability.ability.url} />
             ))}
           </div>
